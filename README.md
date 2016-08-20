@@ -1,2 +1,4 @@
 # GO-Chat-Socket.io
-A simple Chat example
+A simple GO <3 Chat example
+
+[Try Demo](https://gochatio.herokuapp.com/)
