@@ -1,0 +1,3 @@
+package: trSOCKIO/go-socket.io/example
+import:
+- package: github.com/googollee/go-socket.io
