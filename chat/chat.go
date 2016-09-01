@@ -13,18 +13,18 @@ type post struct {
 	Text string
 }
 
-var Server *socketio.Server
+var server *socketio.Server
 
 func init() {
 	var err error
-	Server, err = socketio.NewServer(nil)
+	server, err = socketio.NewServer(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var users = make(map[string]string)
 
-	Server.On("connection", func(so socketio.Socket) {
+	server.On("connection", func(so socketio.Socket) {
 		log.Println("on connection")
 
 		so.Join("chat")
@@ -63,7 +63,7 @@ func init() {
 		})
 	})
 
-	Server.On("error", func(so socketio.Socket, err error) {
+	server.On("error", func(so socketio.Socket, err error) {
 		log.Println("error:", err)
 	})
 }
