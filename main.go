@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"chat/chat"
+	"GO-Chat-Socket.io/chat"
 )
 
 func main() {

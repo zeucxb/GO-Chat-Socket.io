@@ -13,23 +13,28 @@ type post struct {
 	Text string
 }
 
-var server *socketio.Server
+var Server *socketio.Server
 
 func init() {
 	var err error
-	server, err = socketio.NewServer(nil)
+	Server, err = socketio.NewServer(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var users = make(map[string]string)
 
-	server.On("connection", func(so socketio.Socket) {
+	Server.On("connection", func(so socketio.Socket) {
 		log.Println("on connection")
 
-		so.Join("chat")
+		joinErr := so.Join("chat")
+		if joinErr != nil {
+			log.Fatal(joinErr)
+		}
 
-		so.On("new user", func(username string) {
+		so.On("newUser", func(username string) {
+			log.Println(username)
+
 			outputMsg := fmt.Sprintf("%v [ENTROU]", username)
 
 			id := so.Id()
@@ -39,7 +44,7 @@ func init() {
 			so.BroadcastTo("chat", "new user", outputMsg)
 		})
 
-		so.On("chat message", func(msg string) {
+		so.On("chatMessage", func(msg string) {
 			jsonBytes := []byte(msg)
 
 			var posts post
@@ -63,7 +68,7 @@ func init() {
 		})
 	})
 
-	server.On("error", func(so socketio.Socket, err error) {
+	Server.On("error", func(so socketio.Socket, err error) {
 		log.Println("error:", err)
 	})
 }
